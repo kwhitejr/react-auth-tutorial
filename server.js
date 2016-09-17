@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var config = require('./webpack.config');
 
 var express = require('express');
+var path = require('path');
 var stormpath = require('express-stormpath');
 
 var app = express();
@@ -18,6 +19,10 @@ app.use(stormpath.init(app, {
     produces: ['application/json']
   }
 }));
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build/index.html'));
+});
 
 app.on('stormpath.ready', function () {
   app.listen(3000, 'localhost', function (err) {
